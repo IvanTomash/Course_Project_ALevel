@@ -53,14 +53,14 @@ services:
       dockerfile: Basket/Basket.Host/Dockerfile
     environment:
        - ASPNETCORE_ENVIRONMENT=Development
-       - ASPNETCORE_URLS=http://+:5005
+       - ASPNETCORE_URLS=http://+:5003
        - ConnectionString=server=www.alevelwebsite.com;port=5433;database=coursedb;uid=postgres;password=postgres;
        - Authorization__Authority=http://www.alevelwebsite.com:5002
-       - PathBase=http://www.alevelwebsite.com:5005
+       - PathBase=http://www.alevelwebsite.com:5003
     depends_on:
       - postgres
     ports:
-      - 5005:5005
+      - 5003:5003
   nginx:
     image: nginx
     container_name: lde.nginx
