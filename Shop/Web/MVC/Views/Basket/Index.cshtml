@@ -1,0 +1,33 @@
+﻿@model MVC.ViewModels.BasketViewModels.IndexViewModel
+
+@{
+    ViewData["Title"] = "Basket";
+}
+<section class="esh-catalog-hero">
+    <div class="container">
+    </div>
+</section>
+
+<section class="esh-catalog-filters" style="display:flex; justify-content:end">
+    <form asp-action="Index" asp-controller="Catalog" method="post" style="margin:20px">
+        <input class="esh-identity-image" type="submit" value="Catalog" />
+    </form>
+</section>
+
+<div class="container">
+    @if (Model.BasketGames.Count() > 0)
+    {
+        <div>
+            @foreach (var basketItem in Model.BasketGames)
+            {
+                <partial name="_basketProduct" model="basketItem" />
+            }
+        </div>
+    }
+    else
+    {
+        <div>
+            YOUR BASKET IS EMPTY
+        </div>
+    }
+</div>

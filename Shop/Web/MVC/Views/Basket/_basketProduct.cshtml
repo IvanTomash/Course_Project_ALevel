@@ -1,0 +1,32 @@
+﻿@model BasketGame
+
+<style>
+    .basket-item{
+        display:flex; 
+        justify-content:space-between;
+    }
+
+    .basket-item div{
+        margin: 15px;
+    }
+</style>
+
+<form asp-action="RemoveFromBasket" asp-controller="Basket" method="post" class="basket-item">
+    <div class="esh-basket-id">
+        @Model.Id
+    </div>
+    <div class="esh-basket-name">
+        @Model.Name
+    </div>
+    <div class="esh-basket-price">
+        @Model.Price
+    </div>
+    <div class="esh-basket-count">
+        @Model.Count
+    </div>
+    <div class="esh-basket-totalprice">
+        @Model.TotalPrice
+    </div>
+    <input type="hidden" asp-for="@Model.Id" />
+    <input class="esh-identity-image" type="submit" value="Remove" />
+</form>

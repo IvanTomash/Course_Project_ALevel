@@ -8,8 +8,8 @@
     </div>
 </section>
 
-<section class="esh-catalog-filters">
-    <div class="container">
+<section class="esh-catalog-filters" style="display: flex; justify-content: space-between">
+    <div class="container" style="margin-left: 15px">
         <form asp-action="Index" asp-controller="Catalog" method="post">
             <label class="esh-catalog-label" data-title="brand">
                 <select asp-for="@Model.GenreFilterApplied" asp-items="@Model.Genres" class="esh-catalog-filter"></select>
@@ -20,6 +20,9 @@
             <input class="esh-catalog-send" type="image" src="~/images/arrow-right.svg" />
         </form>
     </div>
+    <form asp-action="Index" asp-controller="Basket" method="post" class="esh-shoping-cart-logo" style="margin: 20px">
+        <input class="esh-identity-image" type="submit" value="Basket"/>
+    </form>
 </section>
 
 <div class="container">

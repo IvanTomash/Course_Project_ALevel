@@ -10,13 +10,16 @@ public class HttpClientService : IHttpClientService
 {
     private readonly IHttpClientFactory _clientFactory;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ILogger<IHttpClientService> _logger;
 
     public HttpClientService(
         IHttpClientFactory clientFactory, 
-        IHttpContextAccessor httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        ILogger<IHttpClientService> logger)
     {
         _clientFactory = clientFactory;
         _httpContextAccessor = httpContextAccessor;
+        _logger = logger;
     }
 
     public async Task<TResponse> SendAsync<TResponse, TRequest>(string url, HttpMethod method, TRequest? content)
