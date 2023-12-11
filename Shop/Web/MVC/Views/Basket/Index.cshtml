@@ -31,3 +31,11 @@
         </div>
     }
 </div>
+<div style="justify-content:center">
+    @if (Model.BasketGames.Count() > 0)
+    {
+        <form asp-action="CreateOrder" asp-controller="Order" method="post" style="margin:20px">
+            <input class="esh-identity-image" type="submit" value="Buy" />
+        </form>
+    }   
+</div>

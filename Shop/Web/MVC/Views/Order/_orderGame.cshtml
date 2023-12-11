@@ -1,0 +1,30 @@
+﻿@model OrderGame
+
+<style>
+    .order-game {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .order-game div {
+        margin: 15px;
+    }
+</style>
+
+<div class="order-game">
+    <div>
+        @Model.Productid
+    </div>
+    <div>
+        @Model.Name
+    </div>
+    <div>
+        @Model.Price
+    </div>
+    <div>
+        @Model.Count
+    </div>
+    <div>
+        @Model.TotalPrice
+    </div>
+</div>

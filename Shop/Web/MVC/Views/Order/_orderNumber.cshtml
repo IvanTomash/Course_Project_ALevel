@@ -1,0 +1,21 @@
+﻿@model OrderNumber
+
+<style>
+    .order-number{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .order-number div {
+        margin: 15px;
+    }
+</style>
+
+<div class="order-number">
+    <div>
+        @Model.Id
+    </div>
+    <div>
+        @Model.Number
+    </div>
+</div>

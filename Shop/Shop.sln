@@ -54,7 +54,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.UnitTests", "Catalo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{12E8CA4C-22BA-49DE-A535-12CAE3979424}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Host", "Order\Order.Host\Order.Host.csproj", "{DA8C3A37-46E5-49D5-A5DD-CA0276FD9661}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.Host", "Order\Order.Host\Order.Host.csproj", "{DA8C3A37-46E5-49D5-A5DD-CA0276FD9661}"
+	ProjectSection(ProjectDependencies) = postProject
+		{14F7A357-54F5-4749-A59A-06AC2C46965F} = {14F7A357-54F5-4749-A59A-06AC2C46965F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

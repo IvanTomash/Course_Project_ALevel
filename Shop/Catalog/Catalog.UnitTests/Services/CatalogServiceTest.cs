@@ -76,16 +76,6 @@ public class CatalogServiceTest
             TotalCount = testTotalCount,
         };
 
-        var catalogGameSuccess = new CatalogGame()
-        {
-            Name = "TestName"
-        };
-
-        var catalogGameDtoSuccess = new CatalogGameDto()
-        {
-            Name = "TestName"
-        };
-
         _catalogGameRepository.Setup(s => s.GetByPageAsync(
             It.Is<int>(i => i == testPageindex),
             It.Is<int>(i => i == testPageSize),

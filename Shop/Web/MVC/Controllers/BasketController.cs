@@ -27,11 +27,11 @@ public class BasketController : Controller
     public async Task<IActionResult> Index()
     {
         var basket = await _basketService.GetBasketGames();
-        var orderedBasket = basket.Data.OrderBy(x => x.Id).ToList();
+
         _logger.LogInformation($"Basket: {JsonConvert.SerializeObject(basket)}");
         var vm = new IndexViewModel()
         {
-            BasketGames = orderedBasket ?? new List<BasketGame>()
+            BasketGames = basket.Data ?? new List<BasketGame>()
         };
 
         return View(vm);

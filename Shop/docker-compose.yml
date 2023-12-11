@@ -31,6 +31,8 @@ services:
       - RedirectUri=http://www.alevelwebsite.com/signin-oidc
     depends_on:
       - catalog.api
+      - basket.api
+      - order.api
       - identityserver
     ports:
       - 5001:5001
@@ -58,9 +60,24 @@ services:
        - Authorization__Authority=http://www.alevelwebsite.com:5002
        - PathBase=http://www.alevelwebsite.com:5003
     depends_on:
-      - postgres
+      - redis
     ports:
       - 5003:5003
+  order.api:
+    container_name: lde.order.api
+    build:
+      context: .
+      dockerfile: Order/Order.Host/Dockerfile
+    environment:
+       - ASPNETCORE_ENVIRONMENT=Development
+       - ASPNETCORE_URLS=http://+:5004
+       - ConnectionString=server=www.alevelwebsite.com;port=5433;database=courseOrderDb;uid=postgres;password=postgres;
+       - Authorization__Authority=http://www.alevelwebsite.com:5002
+       - PathBase=http://www.alevelwebsite.com:5004
+    depends_on:
+      - postgres
+    ports:
+      - 5004:5004
   nginx:
     image: nginx
     container_name: lde.nginx
