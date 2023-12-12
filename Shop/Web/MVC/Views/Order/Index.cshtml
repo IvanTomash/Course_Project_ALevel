@@ -16,21 +16,38 @@
     {
         @foreach (var number in Model.OrderNumbers)
         {
-            <div>
-                <h1>
-                    <partial name="_orderNumber" model="number" />
-                </h1>
+            <table border="3px">
+                <partial name="_orderNumber" model="number" />
+                <tr>
+                    <th>
+                        Product ID
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Count
+                    </th>
+                    <th>
+                        Total price
+                    </th>
+                </tr>
                 @foreach (var game in Model.OrderGames)
                 {
                     @if (game.OrderNumber.Id == number.Id)
                     {
+                        Model.PriceForOrder += game.TotalPrice; 
                         <partial name="_orderGame" model="game" />
                     }
                 }
-                <h1>
-                    @Model.Price
-                </h1>
-            </div>
+            </table>
+            <h2 style="margin-bottom:25px; margin-top:0px">
+                Total price for order - @Model.PriceForOrder
+            </h2>
+            Model.PriceForOrder = 0;
         }
     }
     else

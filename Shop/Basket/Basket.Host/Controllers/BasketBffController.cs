@@ -43,8 +43,8 @@ public class BasketBffController : ControllerBase
     {
         var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
 
-        await _basketService.AddProduct(basketId! + "product", request);
-        return Ok();
+        var result = await _basketService.AddProduct(basketId! + "product", request);
+        return Ok(result);
     }
 
     [HttpPost]
@@ -53,7 +53,16 @@ public class BasketBffController : ControllerBase
     {
         var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
         _logger.LogInformation($"Basket id: {basketId}, Product id: {request.Id}");
-        await _basketService.RemoveProduct(basketId! + "product", request.Id);
+        var result = await _basketService.RemoveProduct(basketId! + "product", request.Id);
+        return Ok(result);
+    }
+
+    [HttpPost]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    public async Task<IActionResult> ClearProducts()
+    {
+        var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+        await _basketService.ClearProducts(basketId! + "product");
         return Ok();
     }
 }

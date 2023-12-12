@@ -31,7 +31,8 @@ public class OrderNumberController : ControllerBase
     [ProducesResponseType(typeof(ItemModifiedResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(AddNumberRequest request)
     {
-        var result = await _orderNumberService.Add(request.Number);
+        var personId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+        var result = await _orderNumberService.Add(request.Number, personId!);
         return Ok(new ItemModifiedResponse<int?>() { Id = result });
     }
 

@@ -3,6 +3,14 @@
 @{
     ViewData["Title"] = "Basket";
 }
+
+<style>
+    tr, th, td {
+        justify-content:center;
+        padding: 5px;
+    }
+</style>
+
 <section class="esh-catalog-hero">
     <div class="container">
     </div>
@@ -14,28 +22,44 @@
     </form>
 </section>
 
-<div class="container">
-    @if (Model.BasketGames.Count() > 0)
-    {
-        <div>
+<table class="container" border="3px">
+        @if (Model.BasketGames.Count() > 0)
+        {
+            <tr>
+            <th>
+                Product ID
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Count
+            </th>
+            <th>
+                Total Price
+            </th>
+            <th></th>
+            </tr>
             @foreach (var basketItem in Model.BasketGames)
             {
                 <partial name="_basketProduct" model="basketItem" />
             }
-        </div>
-    }
-    else
-    {
-        <div>
-            YOUR BASKET IS EMPTY
-        </div>
-    }
-</div>
-<div style="justify-content:center">
-    @if (Model.BasketGames.Count() > 0)
-    {
-        <form asp-action="CreateOrder" asp-controller="Order" method="post" style="margin:20px">
-            <input class="esh-identity-image" type="submit" value="Buy" />
-        </form>
-    }   
-</div>
+        }
+        else
+        {
+            <h1>
+                YOUR BASKET IS EMPTY
+            </h1>
+        }
+</table>
+    <div style="justify-content:center">
+        @if (Model.BasketGames.Count() > 0)
+        {
+            <form asp-action="CreateOrder" asp-controller="Order" method="post" style="margin:20px">
+                <input class="esh-identity-image" type="submit" value="Buy" />
+            </form>
+        }
+    </div>

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Order.Host.Data;
 using Order.Host.Data.Entities;
@@ -26,6 +27,7 @@ public class OrderGameRepository : IOrderGameRepository
         var items = await query.OrderBy(c => c.Name)
             .Include(i => i.OrderNumber)
             .ToListAsync();
+        _logger.LogInformation($"Games: {JsonSerializer.Serialize(items)}");
         return items;
     }
 
@@ -56,6 +58,7 @@ public class OrderGameRepository : IOrderGameRepository
             return removingItem.Entity.Id;
         }
 
+        _logger.LogInformation($"The item for deleting isn't found!");
         return null;
     }
 
@@ -76,6 +79,7 @@ public class OrderGameRepository : IOrderGameRepository
             return item.Id;
         }
 
+        _logger.LogInformation($"The item for updating isn't found!");
         return null;
     }
 }

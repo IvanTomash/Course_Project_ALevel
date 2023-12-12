@@ -25,11 +25,12 @@ public class OrderNumberRepository : IOrderNumberRepository
        return items;
     }
 
-    public async Task<int?> Add(string number)
+    public async Task<int?> Add(string number, string? personId)
     {
         var item = await _dbContext.AddAsync(new OrderNumber
         {
-            Number = number
+            Number = number,
+            PersonId = personId!
         });
         await _dbContext.SaveChangesAsync();
         return item.Entity.Id;
@@ -46,6 +47,7 @@ public class OrderNumberRepository : IOrderNumberRepository
             return removingItem.Entity.Id;
         }
 
+        _logger.LogInformation($"OrderNumber for deleting isn't found!");
         return null;
     }
 
@@ -61,6 +63,7 @@ public class OrderNumberRepository : IOrderNumberRepository
             return item.Id;
         }
 
+        _logger.LogInformation($"OrderNumber for updating isn't found!");
         return null;
     }
 }

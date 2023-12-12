@@ -19,13 +19,18 @@ public class BasketService : IBasketService
         return new GetResponse() { Data = result };
     }
 
-    public async Task AddProduct(string userId, AddProductRequest request)
+    public async Task<int?> AddProduct(string userId, AddProductRequest request)
     {
-        await _cacheService.AddOrUpdateAsync(userId, request);
+        return await _cacheService.AddOrUpdateAsync(userId, request);
     }
 
-    public async Task RemoveProduct(string userId, int productId)
+    public async Task<int?> RemoveProduct(string userId, int productId)
     {
-        await _cacheService.RemoveAsync(userId, productId);
+        return await _cacheService.RemoveAsync(userId, productId);
+    }
+
+    public async Task ClearProducts(string userId)
+    {
+        await _cacheService.ClearAsync(userId);
     }
 }

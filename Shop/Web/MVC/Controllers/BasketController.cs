@@ -28,7 +28,6 @@ public class BasketController : Controller
     {
         var basket = await _basketService.GetBasketGames();
 
-        _logger.LogInformation($"Basket: {JsonConvert.SerializeObject(basket)}");
         var vm = new IndexViewModel()
         {
             BasketGames = basket.Data ?? new List<BasketGame>()

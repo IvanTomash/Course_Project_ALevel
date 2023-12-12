@@ -4,9 +4,11 @@ namespace Basket.Host.Services.Interfaces;
 
 public interface ICacheService
 {
-    Task AddOrUpdateAsync(string key, AddProductRequest value);
+    Task<int?> AddOrUpdateAsync(string key, AddProductRequest value);
 
-    Task RemoveAsync(string key, int productId);
+    Task<int?> RemoveAsync(string key, int productId);
+
+    Task ClearAsync(string key);
 
     Task<T> GetAsync<T>(string key);
 }

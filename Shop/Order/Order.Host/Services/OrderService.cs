@@ -54,9 +54,9 @@ public class OrderService : BaseDataService<ApplicationDbContext>, IOrderService
         });
     }
 
-    public async Task<int?> CreateOrderAsync(CreateOrderRequest request)
+    public async Task<int?> CreateOrderAsync(CreateOrderRequest request, string? personId)
     {
-        var orderId = await _orderNumberRepository.Add(Guid.NewGuid().ToString());
+        var orderId = await _orderNumberRepository.Add(Guid.NewGuid().ToString(), personId);
         foreach (var item in request.Data)
         {
             await _orderGameRepository.Add(item.Id, item.Name, item.Price, item.Count, orderId ?? default(int));

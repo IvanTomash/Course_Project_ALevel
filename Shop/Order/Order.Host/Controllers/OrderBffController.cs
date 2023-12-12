@@ -42,14 +42,20 @@ public class OrderBffController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> CreateOrder(CreateOrderRequest request)
     {
-        var result = await _orderService.CreateOrderAsync(request);
+        var personId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+        var result = await _orderService.CreateOrderAsync(request, personId);
         return Ok(result);
     }
 
     [HttpPost]
     public async Task<ActionResult> GetOrders()
     {
-        var result = await _orderService.GetOrdersAsync();
-        return Ok(result);
+        var personId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+        var orders = await _orderService.GetOrdersAsync();
+        orders.OrderNumbers = orders.OrderNumbers.Where(s => s.PersonId == personId).ToList();
+        orders.OrderGames = orders.OrderGames.Where(s => s.OrderNumber.PersonId == personId).ToList();
+
+        _logger.LogInformation($"Person id: {personId}. Order numbers: {orders.OrderNumbers}. Order games: {orders.OrderGames}");
+        return Ok(orders);
     }
 }

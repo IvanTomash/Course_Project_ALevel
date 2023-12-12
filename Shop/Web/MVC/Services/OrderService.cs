@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MVC.Services.Interfaces;
 using MVC.ViewModels;
+using System.Text.Json;
 
 namespace MVC.Services;
 
@@ -28,6 +29,7 @@ public class OrderService : IOrderService
         var result = await _httpClient.SendAsync<int?, Basket>($"{_settings.Value.OrderUrl}/CreateOrder",
             HttpMethod.Post,
             await _basketService.GetBasketGames());
+        _logger.LogInformation($"CreateOrder: {result}");
         return result;
     }
 
@@ -35,6 +37,10 @@ public class OrderService : IOrderService
     {
         var result = await _httpClient.SendAsync<Order, object>($"{_settings.Value.OrderUrl}/GetOrders",
              HttpMethod.Post, null);
+        _logger.LogInformation($"Order: {JsonSerializer.Serialize(result)}");
+        if ( result == null ) 
+        {
+        }
         return result;
     }
 }

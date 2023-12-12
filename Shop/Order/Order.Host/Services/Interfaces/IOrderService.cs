@@ -10,6 +10,6 @@ public interface IOrderService
 {
     Task<ItemsResponse<OrderGameDto>> GetOrderGamesAsync();
     Task<ItemsResponse<OrderNumberDto>> GetOrderNumbersAsync();
-    Task<int?> CreateOrderAsync(CreateOrderRequest request);
+    Task<int?> CreateOrderAsync(CreateOrderRequest request, string? personId);
     Task<OrderResponse> GetOrdersAsync();
 }

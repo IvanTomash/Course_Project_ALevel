@@ -6,6 +6,7 @@ using MVC.Models.Enums;
 using MVC.Models.Responses;
 using MVC.Services.Interfaces;
 using MVC.ViewModels;
+using System.Text.Json;
 
 namespace MVC.Services;
 
@@ -44,13 +45,14 @@ public class CatalogService : ICatalogService
                 PageSize = take,
                 Filters = filters
             });
-
+        _logger.LogInformation($"Catalog: {JsonSerializer.Serialize(result)}");
         return result;
     }
 
     public async Task<IEnumerable<SelectListItem>> GetGenres()
     {
         var genres = await _httpClient.SendAsync<ItemsResponse<CatalogGenre>, PaginatedItemsRequest<CatalogTypeFilter>>($"{_settings.Value.CatalogUrl}/GetGenres", HttpMethod.Post, null);
+        _logger.LogInformation($"Genres: {JsonSerializer.Serialize(genres)}");
         var list = genres.Data.ToList();
         var result = new List<SelectListItem>();
         foreach (var item in list)
@@ -64,13 +66,13 @@ public class CatalogService : ICatalogService
     public async Task<IEnumerable<SelectListItem>> GetPublishers()
     {
         var publishers = await _httpClient.SendAsync<ItemsResponse<CatalogPublisher>, PaginatedItemsRequest<CatalogTypeFilter>>($"{_settings.Value.CatalogUrl}/GetPublishers", HttpMethod.Post, null);
+        _logger.LogInformation($"Publishers: {JsonSerializer.Serialize(publishers)}");
         var list = publishers.Data.ToList();
         var result = new List<SelectListItem>();
         foreach (var item in list)
         {
             result.Add(new SelectListItem(item.Publisher, item.Id.ToString()));
         }
-
         return result;
     }
 }

@@ -20,5 +20,9 @@ public class OrderNumberEntityTypeConfiguration
         builder.Property(cb => cb.Number)
             .IsRequired()
             .HasMaxLength(100);
+
+        builder.Property(cb => cb.PersonId)
+            .IsRequired()
+            .HasMaxLength(50);
     }
 }

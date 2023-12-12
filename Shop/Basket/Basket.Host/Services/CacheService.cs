@@ -2,6 +2,7 @@
 using Basket.Host.Models.Requests;
 using Basket.Host.Services.Interfaces;
 using Infrastructure.Services.Interfaces;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
@@ -26,10 +27,10 @@ public class CacheService : ICacheService
         _config = config.Value;
     }
 
-    public Task AddOrUpdateAsync(string key, AddProductRequest value)
+    public Task<int?> AddOrUpdateAsync(string key, AddProductRequest value)
         => AddOrUpdateInternalAsync(key, value);
 
-    private async Task AddOrUpdateInternalAsync(string key, AddProductRequest value,
+    private async Task<int?> AddOrUpdateInternalAsync(string key, AddProductRequest value,
        IDatabase redis = null!, TimeSpan? expiry = null)
     {
         redis = redis ?? GetRedisDatabase();
@@ -49,6 +50,7 @@ public class CacheService : ICacheService
         {
             value.Count += certainProduct.Count;
             products.Remove(certainProduct);
+            _logger.LogInformation($"Updated item id: {value.Id}");
         }
        
         products.Add(value);
@@ -63,17 +65,38 @@ public class CacheService : ICacheService
         {
             _logger.LogInformation($"Cached value for key {key} updated");
         }
+
+        return value.Id;
     }
 
-    public Task RemoveAsync(string key, int productId)
+    public async Task ClearAsync(string key)
+    {
+        IDatabase redis = GetRedisDatabase();
+        TimeSpan expiry = _config.CacheTimeout;
+        var emptyList = new List<AddProductRequest>();
+        var serialized = _jsonSerializer.Serialize(emptyList);
+
+        var cahceKey = GetItemCacheKey(key);
+
+        if (await redis.StringSetAsync(cahceKey, serialized, expiry))
+        {
+            _logger.LogInformation($"Cached value for key {key} cached");
+        }
+        else
+        {
+            _logger.LogInformation($"Cached value for key {key} updated");
+        }
+    }
+    
+    public Task<int?> RemoveAsync(string key, int productId)
        => RemoveInternalAsync(key, productId);
 
-    private async Task RemoveInternalAsync(string key, int productId,
+    private async Task<int?> RemoveInternalAsync(string key, int productId,
        IDatabase redis = null!, TimeSpan? expiry = null)
     {
         redis = redis ?? GetRedisDatabase();
         expiry = expiry ?? _config.CacheTimeout;
-
+        int? result = null;
         var cahceKey = GetItemCacheKey(key);
 
         var products = await GetAsync<List<AddProductRequest>>(key);
@@ -90,10 +113,12 @@ public class CacheService : ICacheService
             var updatedProduct = certainProduct;
             updatedProduct.Count -= 1;
 
+            result = updatedProduct.Id;
             products.Remove(certainProduct);
             if (updatedProduct.Count > 0)
             {
                 products.Add(updatedProduct);
+                _logger.LogInformation($"{updatedProduct.Count} products left");
             }
         }
 
@@ -107,6 +132,8 @@ public class CacheService : ICacheService
         {
             _logger.LogInformation($"Cached value for key {key} updated");
         }
+
+        return result;
     }
 
     public async Task<T> GetAsync<T>(string key)
@@ -116,7 +143,7 @@ public class CacheService : ICacheService
         var cacheKey = GetItemCacheKey(key);
 
         var serialized = await redis.StringGetAsync(cacheKey);
-
+        _logger.LogInformation($"GetAsync serialized info: {serialized}");
         return serialized.HasValue ?
             _jsonSerializer.Deserialize<T>(serialized.ToString())
             : default(T)!;

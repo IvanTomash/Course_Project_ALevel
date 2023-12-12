@@ -20,12 +20,14 @@
             <input class="esh-catalog-send" type="image" src="~/images/arrow-right.svg" />
         </form>
     </div>
-    <form asp-action="Index" asp-controller="Basket" method="post" class="esh-shoping-cart-logo" style="margin: 20px">
-        <input class="esh-identity-image" type="submit" value="Basket"/>
-    </form>
-    <form asp-action="Index" asp-controller="Order" method="post" class="esh-shoping-cart-logo" style="margin: 20px">
-        <input class="esh-identity-image" type="submit" value="Orders" />
-    </form>
+    <div style="display: flex; justify-content: space-between">
+        <form asp-action="Index" asp-controller="Basket" method="post" class="esh-shoping-cart-logo" style="margin: 20px">
+            <input class="esh-identity-image" type="submit" value="Basket" />
+        </form>
+        <form asp-action="Index" asp-controller="Order" method="post" class="esh-shoping-cart-logo" style="margin: 20px">
+            <input class="esh-identity-image" type="submit" value="Orders" />
+        </form>
+    </div>    
 </section>
 
 <div class="container">

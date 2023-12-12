@@ -17,9 +17,9 @@ public class OrderNumberService : BaseDataService<ApplicationDbContext>, IOrderN
         _orderNumberRepository = orderNumberRepository;
     }
 
-    public Task<int?> Add(string number)
+    public Task<int?> Add(string number, string personId)
     {
-        return ExecuteSafeAsync(() => _orderNumberRepository.Add(number));
+        return ExecuteSafeAsync(() => _orderNumberRepository.Add(number, personId));
     }
 
     public Task<int?> Delete(int id)

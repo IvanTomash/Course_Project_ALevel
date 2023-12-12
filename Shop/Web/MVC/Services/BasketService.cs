@@ -2,6 +2,7 @@
 using MVC.Models.Requests;
 using MVC.Services.Interfaces;
 using MVC.ViewModels;
+using Newtonsoft.Json;
 using System.Xml.Linq;
 
 namespace MVC.Services;
@@ -22,9 +23,9 @@ public class BasketService : IBasketService
         _settings = settings;
     }
 
-    public async Task AddGameToBasket(int id, string name, decimal price)
+    public async Task<int?> AddGameToBasket(int id, string name, decimal price)
     {
-        await _httpClient.SendAsync<object, BasketGame>($"{_settings.Value.BasketUrl}/AddProduct", 
+        var result = await _httpClient.SendAsync<int?, BasketGame>($"{_settings.Value.BasketUrl}/AddProduct", 
             HttpMethod.Post,
             new BasketGame()
             {
@@ -33,17 +34,26 @@ public class BasketService : IBasketService
                Price = price,
                Count = 1
             });
+
+        return result;
     }
 
     public async Task<Basket> GetBasketGames()
     {
         var result = await _httpClient.SendAsync<Basket, object>($"{_settings.Value.BasketUrl}/GetProducts", HttpMethod.Post, null);
+        _logger.LogInformation($"Basket: {JsonConvert.SerializeObject(result)}");
         return result;
     }
 
-    public async Task RemoveGameFromBasket(int id)
+    public async Task<int?> RemoveGameFromBasket(int id)
     {
         _logger.LogInformation($"Basket service product id: {id}");
-        await _httpClient.SendAsync<object, RemoveProductRequest>($"{_settings.Value.BasketUrl}/RemoveProduct", HttpMethod.Post, new RemoveProductRequest() { Id = id});
+        var result = await _httpClient.SendAsync<int?, RemoveProductRequest>($"{_settings.Value.BasketUrl}/RemoveProduct", HttpMethod.Post, new RemoveProductRequest() { Id = id});
+        return result;
+    }
+
+    public async Task ClearBasket()
+    {
+        await _httpClient.SendAsync<object, object>($"{_settings.Value.BasketUrl}/ClearProducts", HttpMethod.Post, null);
     }
 }
