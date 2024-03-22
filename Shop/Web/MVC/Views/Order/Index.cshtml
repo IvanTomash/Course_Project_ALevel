@@ -1,0 +1,60 @@
+﻿@model MVC.ViewModels.OrderViewModels.IndexViewModel
+
+<section class="esh-catalog-hero">
+    <div class="container">
+    </div>
+</section>
+
+<section class="esh-catalog-filters" style="display:flex; justify-content:end">
+    <form asp-action="Index" asp-controller="Catalog" method="post" style="margin:20px">
+        <input class="esh-identity-image" type="submit" value="Catalog" />
+    </form>
+</section>
+
+<div class="container">
+    @if (Model.OrderNumbers.Count() > 0)
+    {
+        @foreach (var number in Model.OrderNumbers)
+        {
+            <table border="3px">
+                <partial name="_orderNumber" model="number" />
+                <tr>
+                    <th>
+                        Product ID
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Count
+                    </th>
+                    <th>
+                        Total price
+                    </th>
+                </tr>
+                @foreach (var game in Model.OrderGames)
+                {
+                    @if (game.OrderNumber.Id == number.Id)
+                    {
+                        Model.PriceForOrder += game.TotalPrice; 
+                        <partial name="_orderGame" model="game" />
+                    }
+                }
+            </table>
+            <h2 style="margin-bottom:25px; margin-top:0px">
+                Total price for order - @Model.PriceForOrder
+            </h2>
+            Model.PriceForOrder = 0;
+        }
+    }
+    else
+    {
+        <div>
+            THERE ARE NO ORDERS
+        </div>
+    }
+
+</div>

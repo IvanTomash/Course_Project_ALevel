@@ -1,0 +1,65 @@
+﻿@model MVC.ViewModels.BasketViewModels.IndexViewModel
+
+@{
+    ViewData["Title"] = "Basket";
+}
+
+<style>
+    tr, th, td {
+        justify-content:center;
+        padding: 5px;
+    }
+</style>
+
+<section class="esh-catalog-hero">
+    <div class="container">
+    </div>
+</section>
+
+<section class="esh-catalog-filters" style="display:flex; justify-content:end">
+    <form asp-action="Index" asp-controller="Catalog" method="post" style="margin:20px">
+        <input class="esh-identity-image" type="submit" value="Catalog" />
+    </form>
+</section>
+
+<table class="container" border="3px">
+        @if (Model.BasketGames.Count() > 0)
+        {
+            <tr>
+            <th>
+                Product ID
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Count
+            </th>
+            <th>
+                Total Price
+            </th>
+            <th></th>
+            </tr>
+            @foreach (var basketItem in Model.BasketGames)
+            {
+                <partial name="_basketProduct" model="basketItem" />
+            }
+        }
+        else
+        {
+            <h1>
+                YOUR BASKET IS EMPTY
+            </h1>
+        }
+</table>
+    <div style="justify-content:center">
+        @if (Model.BasketGames.Count() > 0)
+        {
+            <form asp-action="CreateOrder" asp-controller="Order" method="post" style="margin:20px">
+                <input class="esh-identity-image" type="submit" value="Buy" />
+            </form>
+        }
+    </div>

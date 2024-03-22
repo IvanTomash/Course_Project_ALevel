@@ -1,0 +1,20 @@
+﻿@model CatalogGame
+
+
+<form asp-action="AddToBasket" asp-controller="Basket" method="post" style="margin:15px">
+
+    <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" />
+
+    <div class="esh-catalog-name">
+        <span>@Model.Name</span>
+    </div>
+    <div class="esh-catalog-price">
+        <span>@Model.Price.ToString("N2")</span>
+    </div>
+
+    <input type="hidden" asp-for="@Model.Id"/>
+    <input type="hidden" asp-for="@Model.Name"/>
+    <input type="hidden" asp-for="@Model.Price" />
+    <input class="esh-identity-image" type="submit" value="Add to the basket" />   
+    
+</form>
